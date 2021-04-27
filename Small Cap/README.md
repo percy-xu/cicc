@@ -12,7 +12,7 @@ This is my first project at CICC, so mainly to get myself started as a quant res
 
 ### Dependencies
 
-The entire project is written in python with commonly used packages like pandas and numpy. An external API [`JQData`](https://www.joinquant.com/help/api/help#name:JQData) has also been included for accessing Shen Wan (申万) industry catogory data (in lieu of GICS used by MSCI) 
+The entire project is written in python with commonly used packages like pandas and numpy. An external API [`JQData`](https://www.joinquant.com/help/api/help#name:JQData) has also been included for accessing Shen Wan (申万) industry catogory data (in lieu of GICS used by MSCI).
 
 Finally, [`forex-python`](https://github.com/MicroPyramid/forex-python) is used for exchange rate data and [`plotly`](https://plotly.com/python/) is used for visualization.
 
