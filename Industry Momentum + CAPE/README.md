@@ -2,7 +2,7 @@
 
 - [What?](#what)
   - [Goal](#goal)
-  - [Background](#background)
+  - [Literature Review](#literature-review)
     - [Industry Momentum](#industry-momentum)
     - [Shiller-CAPE Ratio](#shiller-cape-ratio)
 - [Why?](#why)
@@ -19,7 +19,7 @@
 
 This project explores two asset price anomalies in the equities market: **momentum** and **value**. More specifically, I attempt to develop a strategy combining the industry momentum effect and the Shiller-CAPE ratio in the China A-shares stock market.
 
-### Background
+### Literature Review
 
 Both industry momentum effect and Shiller-CAPE ratio have received significant attention from scholars and investors since the 1990s. This section provides some background and relevant literatures for these two topics.
 
@@ -50,6 +50,8 @@ This project hopes to find whether industry momentum exists in China A-shares an
 ## How?
 
 ### Dependencies
+
+This project is written in python. It largely uses the [`xquant`](https://github.com/percy-xu/xquant) library developed by myself. In addition, `pandas`, `numpy`, and `plotly` are used for data processing, computation, and visualization.
 
 ### Stock Selection
 
