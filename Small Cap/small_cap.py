@@ -710,11 +710,11 @@ if __name__ == '__main__':
 
     # load in datasets
     print('[Initilizing...] Loading data.')
-    df_mcap = pd.read_csv('\\data\\market_cap.csv', parse_dates=[
+    df_mcap = pd.read_csv('data\\market_cap.csv', parse_dates=[
         'date']).set_index('date')
-    df_prices = pd.read_csv('\\data\\price.csv', parse_dates=[
+    df_prices = pd.read_csv('data\\price.csv', parse_dates=[
                             'date']).set_index('date')
-    df_volume = pd.read_csv('\\data\\volume.csv', parse_dates=[
+    df_volume = pd.read_csv('data\\volume.csv', parse_dates=[
                             'date']).set_index('date')
     print('[Initilizing...] Data successfully loaded.\n')
 
