@@ -1,5 +1,7 @@
 # Industry Momentum + Shiller-CAPE <!-- omit in toc -->
 
+## Table of Contents <!-- omit in toc -->
+
 - [What?](#what)
   - [Goal](#goal)
   - [Literature Review](#literature-review)
@@ -8,7 +10,10 @@
 - [Why?](#why)
 - [How?](#how)
   - [Dependencies](#dependencies)
-  - [Stock Selection](#stock-selection)
+  - [Strategy](#strategy)
+    - [Description](#description)
+    - [Weighting Scheme](#weighting-scheme)
+    - [Look-back Period](#look-back-period)
   - [Portfolio Management](#portfolio-management)
   - [Back-testing](#back-testing)
 - [Result](#result)
@@ -37,7 +42,7 @@ If such thing as an economics prophet exists, Robert Shiller will surely be one 
 
 **C**yclically **A**djusted **P**rice-**E**arnings Ratio is centered around the simple idea of *"averaging out fluctuations"*. Shiller argues that measurements of company performance such as the PE ratio or dividend yield can be overly influenced by short term fluctuations. For example, the PE ratio for a company in 2021 Q1 alone can be affected by a temporary price shock and therefore do not have significant predictive power for future returns. When forecasting long-term future returns, one should really look at long-term past returns. **CAPE is calculated by taking the average of inflation-adjusted earnings and prices over the past 10 years, or in short, the smoothed earnings.** [Campbell and Shiller (1998)](https://jpm.pm-research.com/content/24/2/11) examined the smoothed earnings of the US stock market at the turn of the century and concluded it was dangerously overvalued. Sure enough, the dot com bubble bursted in less than 5 years.
 
-More recently, [Bunn and Shiller (2014)](https://www.nber.org/papers/w20370) examined the CAPE ratio in a larger historical scope. Going back to as far as the beginning of the 1870s, Bunn and Shiller computed the CAPE ratios for the Industrials sector, the Utilities sector and the Railroads sector. They then designed a sector rotation strategy that overweighed the undervalued sector and underweighed the overvalued sector. This strategy provided 1.09% annualized, inflation-adjusted excess total return over 110 years.
+More recently, [Bunn and Shiller (2014)](https://www.nber.org/papers/w20370) examined the CAPE ratio in a larger historical scope. Going back to as far as the beginning of the 1870s, Bunn and Shiller computed the CAPE ratios for the Industrials sector, the Utilities sector and the Railroads sector. They then designed a sector rotation strategy that overweighted the undervalued sector and underweighted the overvalued sector. This strategy provided 1.09% annualized, inflation-adjusted excess total return over 110 years.
 
 ## Why?
 
@@ -51,11 +56,31 @@ This project hopes to find whether industry momentum exists in China A-shares an
 
 ### Dependencies
 
-This project is written in python. It largely uses the [`xquant`](https://github.com/percy-xu/xquant) library developed by myself. In addition, `pandas`, `numpy`, and `plotly` are used for data processing, computation, and visualization.
+This project is entirely written in python. It largely uses the [`xquant`](https://github.com/percy-xu/xquant) library developed by myself. In addition, `pandas`, `numpy`, and `plotly` are used for data processing, computation, and visualization.
 
-### Stock Selection
+### Strategy
+
+#### Description
+
+My index is, in essence, an **"index of indices"** - much like a fund of funds (FOF) in terms of structure. For this project, I am defining the CITIC Industry Indices (中信行业指数) as the stock selection universe. The CITIC Industry Indices includes daily-computed index for 28 industries starting from 2004-12-31.
+
+At a cross-section, the *Relative CAPE Ratio* is computed for every industry. Industries are ranked by their Relative CAPE Ratios. The 3 industries with the highest Relative CAPE are underweighted and the 3 industries with the lowest Relative CAPE are overweighted.
+
+This leaves us with 22 remaining industries. By calculating each industry's performance in the past 6 months, we categorize them into winners and losers. Winners (industries with strong momentum) are overweighted and losers (industries with weak momentum) are underweighted.
+
+#### Weighting Scheme
+
+Bunn and Shiller used a point-based weighting scheme which I find easy to understand and implement. A adapted version of this weighting scheme is used in this project. Every time my index is computed, each industry in the cross-section start with 2 points. 1 point is added when an industry is overweighted and 1 point is subtracted when an industry is underweighted. This leaves us 28 industries with points ranging from 1 to 3. Respective weights are then calculated for each industry based on its point.
+
+#### Look-back Period
+
+When determining an industry is a winner or a loser, we look at its performance over a period of time in the past. In our case, 6 months. This might seem like an arbitrary number - and in a sense it is. When Jegadeesh first discovered the momentum effect, he found that momentum strategies with various look-back periods are on average quite profitable and just selected 6 months as the look-back period for the rest of his paper. Moskowitz followed Jegadeesh for simplicity in his paper, and this project selects 6 months for the same reason.
 
 ### Portfolio Management
+
+We are constructing an index, and therefore no cash is reserved in the portfolio. Our portfolio shall be a self-financed, zero-cost portfolio.
+
+The portfolio is rebalanced quarterly to always incorporate the most recent information.
 
 ### Back-testing
 
