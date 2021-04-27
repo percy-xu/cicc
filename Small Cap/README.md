@@ -42,6 +42,6 @@ The remaining firms are eligible to be included in my small-cap index.
 
 ## Result
 
-Significant size effect exists in the China A-Shares market. Equal-weight distribution generates more excess return, which is expected because it enlarges the size effect by assigning more weight to small firms. This strategy also suffers from large maximum drawdowns due to high volatility, and consequently suppressed Sharpe Ratio and Information Ratio.
+Significant size effect exists in the China A-Shares market. Equal-weight distribution generates more excess return, which is expected because it enlarges the size effect by assigning more weight to small firms. This strategy also suffers from large maximum drawdown due to high volatility, and consequently suppressed Sharpe Ratio and Information Ratio.
 
 ![Performance Plot](https://github.com/percy-xu/cicc/blob/master/Small%20Cap/performance_plot.png?raw=true)
