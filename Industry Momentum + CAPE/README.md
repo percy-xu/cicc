@@ -7,6 +7,7 @@
   - [Literature Review](#literature-review)
     - [Industry Momentum](#industry-momentum)
     - [Shiller-CAPE Ratio](#shiller-cape-ratio)
+  - [Momentum and Value](#momentum-and-value)
 - [Motivation](#motivation)
 - [Methodology](#methodology)
   - [Dependencies](#dependencies)
@@ -44,11 +45,15 @@ If such thing as an economics prophet exists, Robert Shiller will surely be one 
 
 More recently, [Bunn and Shiller (2014)](https://www.nber.org/papers/w20370) examined the CAPE ratio in a larger historical scope. Going back to as far as the beginning of the 1870s, Bunn and Shiller computed the CAPE ratios for the Industrials sector, the Utilities sector, and the Railroads sector. They then designed a sector rotation strategy that overweighted the undervalued (cheap) sector and underweighted the overvalued (expensive) sector. This strategy provided 1.09% annualized, inflation-adjusted excess total return over 110 years.
 
+### Momentum and Value
+
+Combining momentum and value is nothing new. [Asness (1997)](https://www.jstor.org/stable/4479982) first illustrated the negative correlation between momentum and value. By using data from 1963 to 1994 in the US stock market, Asness found that value outperforms among weak momentum stocks and underperforms among strong momentum stocks. Conversely, momentum outperforms among expensive stocks and underperforms among cheap stocks. It ensues then, a strategy that profits from both of the two pricing anomalies enjoys significantly reduced volatility. [Asness, Frazzini, Israel and Moskowitz (2014)](https://jpm.pm-research.com/content/40/5/75) promoted momentum as a strong complement to be used with value strategies.
+
 ## Motivation
 
-Much of the existing literatures on industry momentum and Shiller-CAPE limit their scopes to the US stock market, and little has been done to test these theories in the Chinese stock market. This project aims to fill this gap.
+Much of the existing literatures on industry momentum and Shiller-CAPE limit their scopes to the US stock market, and little has been done to test these theories in the Chinese stock market. This project aims to fill these gaps.
 
-The Chinese stock market (China A-shares) is perhaps one of the most imbalanced equities market in the world in terms of market participants. Retail investors far outnumber institutional investors, which makes market behavior in the A-shares vastly different from other equities markets. For example, China A-Shares has an abnormally high turnover rate, and many believe *reversal* is a better predictor than *momentum* in China A-shares.
+The Chinese stock market (China A-shares) is perhaps one of the most unique equities market in the world, marked by its imbalanced market participants. Retail investors far outnumber institutional investors, which makes market behavior in the A-shares vastly different from other equities markets. For example, China A-Shares has an abnormally high turnover rate, and many believe *reversal* is a better predictor than *momentum* in China A-shares.
 
 This project hopes to find whether industry momentum exists and the predictive power of the Shiller-CAPE ratio in China A-shares. The performance of an index that incorporates industry momentum and Shiller-CAPE will likely give us the answer.
 
