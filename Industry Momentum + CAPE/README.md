@@ -2,13 +2,13 @@
 
 ## Table of Contents <!-- omit in toc -->
 
-- [What?](#what)
-  - [Goal](#goal)
+- [About](#about)
+  - [Purpose](#purpose)
   - [Literature Review](#literature-review)
     - [Industry Momentum](#industry-momentum)
     - [Shiller-CAPE Ratio](#shiller-cape-ratio)
-- [Why?](#why)
-- [How?](#how)
+- [Motivation](#motivation)
+- [Methodology](#methodology)
   - [Dependencies](#dependencies)
   - [Strategy](#strategy)
     - [Description](#description)
@@ -18,9 +18,9 @@
   - [Back-testing](#back-testing)
 - [Result](#result)
 
-## What?
+## About
 
-### Goal
+### Purpose
 
 This project explores two asset price anomalies in the equities market: **momentum** and **value**. More specifically, I attempt to develop a strategy combining the industry momentum effect and the Shiller-CAPE ratio in the China A-shares stock market.
 
@@ -44,7 +44,7 @@ If such thing as an economics prophet exists, Robert Shiller will surely be one 
 
 More recently, [Bunn and Shiller (2014)](https://www.nber.org/papers/w20370) examined the CAPE ratio in a larger historical scope. Going back to as far as the beginning of the 1870s, Bunn and Shiller computed the CAPE ratios for the Industrials sector, the Utilities sector and the Railroads sector. They then designed a sector rotation strategy that overweighted the undervalued sector and underweighted the overvalued sector. This strategy provided 1.09% annualized, inflation-adjusted excess total return over 110 years.
 
-## Why?
+## Motivation
 
 Much of the existing literatures on industry momentum and Shiller-CAPE limit their scopes to the US stock market, and little has been done to test these theories in the Chinese stock market.
 
@@ -52,7 +52,7 @@ The Chinese stock market (China A-shares) is perhaps one of the most imbalanced 
 
 This project hopes to find whether industry momentum exists in China A-shares and the predictive power of the Shiller-CAPE ratio. The performance of an index that incorporates industry momentum and Shiller-CAPE will likely give us the answer.
 
-## How?
+## Methodology
 
 ### Dependencies
 
