@@ -70,21 +70,29 @@ This project is entirely written in python. It largely uses the [`xquant`](https
 
 #### CAPE
 
-No matter how you twist it, CAPE is just a variation of the traditional P/E-ratio. As mentioned, it is adjusted for business cycles to make long-run predictions. But for now let us step back and look at the traditional P/E-ratio, which in period $t$ is defined as:
+No matter how you twist it, CAPE is just a variation of the traditional P/E-ratio. As mentioned, it is adjusted for business cycles to make long-run predictions. But for now let us step back and look at the traditional P/E-ratio, which in period *t* is defined as:
 
 <!-- $\text{P/E-ratio}_{t}=\frac{Price_{t}}{Earning_{t}}$ -->
 
 ![equation](https://latex.codecogs.com/svg.latex?\text{P/E-ratio}_{t}=\frac{Price_{t}}{Earning_{t}})
 
-Both the denominator and the numerator need to be modified for the long-run, but only slightly. We first consider the denominator. To reflect the true cash flow received by the shareholders, Shiller and Bunn constructed a "total return" price series which in period $t$ is defined as:
+Both the denominator and the numerator need to be modified for the long-run, but only slightly. We first consider the denominator. To reflect the true cash flow received by the shareholders, Shiller and Bunn constructed a "total return" price series which in period *t* is defined as:
 
-$P^{TR}_{t}=\frac{Price_t+Dividend_{t-1}}{Price_{t-1}}$
+<!-- $P^{TR}_{t}=\frac{Price_t+Dividend_{t-1}}{Price_{t-1}}$ -->
 
-By taking dividends into account, differences in company payout policies are effectively eliminated. We now turn to the numerator, which is where the long-term forecasting power originates. By taking the geometric mean of earnings in the last $n$ years, we get an "averaged out" earning which in year $t$ is defined as:
+![equation](https://latex.codecogs.com/svg.latex?P^{TR}_{t}=\frac{Price_t+Dividend_{t-1}}{Price_{t-1}})
 
-$\overline{e}_{t}={\frac{1}{n}}(\sum^{n}_{i=1}e_{t-n+i})=\frac{e_{t-n}+e_{t-n+1}+\cdots+e_{t-1}+e_{t}}{n}$
+By taking dividends into account, differences in company payout policies are effectively eliminated. We now turn to the numerator, which is where the long-term forecasting power originates. By taking the geometric mean of earnings in the last *n* years, we get an "averaged out" earning which in year *t* is defined as:
 
-At every year $x$, we compute the scaled earning $e^{scaled}_{x}$ by multiplying $e_{x}$ with $\frac{P^{TR}_{x}}{Price_{x}}$ to account for the change we made earlier from the price series to the total return price series.
+<!-- $\overline{e}_{t}={\frac{1}{n}}(\sum^{n}_{i=1}e_{t-n+i})=\frac{e_{t-n}+e_{t-n+1}+\cdots+e_{t-1}+e_{t}}{n}$ -->
+
+![equation](https://latex.codecogs.com/svg.latex?\overline{e}_{t}={\frac{1}{n}}(\sum^{n}_{i=1}e_{t-n+i})=\frac{e_{t-n}+e_{t-n+1}+\cdots+e_{t-1}+e_{t}}{n})
+
+At every year *x*, we compute the scaled earning by multiplying the earning with the ratio of total return price and price to account for the change we made earlier from the price series to the total return price series.
+
+<!-- $e^{scaled}_{x} = e_{x}\cdot\frac{P^{TR}_{x}}{Price_{x}}$ -->
+
+![equation](https://latex.codecogs.com/svg.latex?e^{scaled}_{x}=e_{x}\cdot\frac{P^{TR}_{x}}{Price_{x}})
 
 #### Relative CAPE
 
