@@ -72,21 +72,21 @@ This project is entirely written in python. It largely uses the [`xquant`](https
 
 As intimidating as it may sound, CAPE is no more than a variation of the traditional P/E-ratio. As mentioned, it is adjusted for business cycles to make long-run predictions. But for now let us step back and look at the traditional P/E-ratio, which in period *t* is defined as:
 
-<!-- $\text{P/E-ratio}_{t}=\frac{Price_{t}}{Earning_{t}}$ -->
+<!-- $\text{P/E-ratio}_{t}=\frac{P_{t}}{e_{t}}$ -->
 
-![equation](https://latex.codecogs.com/svg.latex?\text{P/E-ratio}_{t}=\frac{Price_{t}}{Earning_{t}})
+![equation](https://latex.codecogs.com/svg.latex?\text{P/E-ratio}_{t}=\frac{P_{t}}{e_{t}})
 
 Both the denominator and the numerator need to be modified for the long-run, but only slightly. We first consider the denominator. To reflect the true cash flow received by the shareholders, Shiller and Bunn constructed a "total return" price series which in period *t* is defined as:
 
-<!-- $P^{TR}_{t}=\frac{Price_t+Dividend_{t-1}}{Price_{t-1}}$ -->
+<!-- $P^{TR}_{t}=\frac{P_t+Div_{t-1}}{P_{t-1}}$ -->
 
-![equation](https://latex.codecogs.com/svg.latex?P^{TR}_{t}=\frac{Price_t+Dividend_{t-1}}{Price_{t-1}})
+![equation](https://latex.codecogs.com/svg.latex?P^{TR}_{t}=\frac{P_t+Div_{t-1}}{P_{t-1}})
 
 By taking dividends into account, differences in company payout policies are effectively eliminated. We now turn to the numerator, which is where the long-term forecasting power originates. At every year *x*, we compute the scaled earning by multiplying the earning with the ratio of total return price and price to reflect the change we made earlier from the price series to the total return price series.
 
-<!-- $e^{scaled}_{x} = e_{x}\cdot\frac{P^{TR}_{x}}{Price_{x}}$ -->
+<!-- $e^{scaled}_{x} = e_{x}\cdot\frac{P^{TR}_{x}}{P_{x}}$ -->
 
-![equation](https://latex.codecogs.com/svg.latex?e^{scaled}_{x}=e_{x}\cdot\frac{P^{TR}_{x}}{Price_{x}})
+![equation](https://latex.codecogs.com/svg.latex?e^{scaled}_{x}=e_{x}\cdot\frac{P^{TR}_{x}}{P_{x}})
 
 Now we have a total return price series and a scaled earnings series. They are then adjusted for inflation using the [Consumer Price Index from the FRED](https://fred.stlouisfed.org/series/CHNCPIALLQINMEI).
 
