@@ -74,6 +74,8 @@ No matter how you twist it, CAPE is just a variation of the traditional P/E-rati
 
 $\text{P/E-ratio}_{t}=\frac{Price_{t}}{Earning_{t}}$
 
+![equation](https://latex.codecogs.com/gif.latex?\text{P/E-ratio}_{t}=\frac{Price_{t}}{Earning_{t}})
+
 Both the denominator and the numerator need to be modified for the long-run, but only slightly. We first consider the denominator. To reflect the true cash flow received by the shareholders, Shiller and Bunn constructed a "total return" price series which in period $t$ is defined as:
 
 $P^{TR}_{t}=\frac{Price_t+Dividend_{t-1}}{Price_{t-1}}$
