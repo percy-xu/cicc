@@ -108,11 +108,11 @@ Finally, much like the traditional P/E-ratio, simply divide the inflation-adjust
 
 #### Description
 
-My index is, in essence, an **"index of indices"** - much like a fund of funds (FOF) in terms of structure. For this project, I am defining the *TO_BE_CONFIRMED* as the stock selection universe.
+My index is, in essence, an **"index of indices"** - much like a fund of funds (FOF) in terms of structure. For this project, I am defining the *TBD* as the stock selection universe.
 
-At a cross-section, the *Relative CAPE Ratio* is computed for every industry. Industries are ranked by their Relative CAPE Ratios. The 3 industries with the highest Relative CAPE are underweighted and the 3 industries with the lowest Relative CAPE are overweighted.
+At a cross-section, the *Relative CAPE Ratio* is computed for every industry. Industries are ranked by their Relative CAPE Ratios. The *TBD* industries with the highest Relative CAPE are underweighted and the *TBD* industries with the lowest Relative CAPE are overweighted.
 
-This leaves us with 22 remaining industries. By calculating each industry's performance in the past 6 months, we categorize them into winners and losers. Winners (industries with strong momentum) are overweighted and losers (industries with weak momentum) are underweighted.
+This leaves us with *TBD* remaining industries. By calculating each industry's performance in the past 6 months, we categorize them into winners and losers. Winners (industries with strong momentum) are overweighted and losers (industries with weak momentum) are underweighted.
 
 #### Weighting Scheme
 
