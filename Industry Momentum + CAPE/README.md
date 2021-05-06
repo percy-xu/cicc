@@ -64,7 +64,7 @@ This project hopes to find whether industry momentum exists and the predictive p
 
 ### Dependencies
 
-This project is entirely written in python. It largely uses the [`xquant`](https://github.com/percy-xu/xquant) library developed by myself. In addition, `pandas`, `numpy`, and `plotly` are used for data processing, computation, and visualization.
+This project is entirely written in python. It largely uses the [`xquant`](https://github.com/percy-xu/xquant) library developed by myself. In addition, `pandas`, `numpy`, `scipy` and `plotly` are used for data processing, computation, and visualization.
 
 ### Construction of CAPE and Relative CAPE
 
