@@ -11,6 +11,9 @@
 - [Motivation](#motivation)
 - [Methodology](#methodology)
   - [Dependencies](#dependencies)
+  - [Construction of CAPE and Relative CAPE](#construction-of-cape-and-relative-cape)
+    - [CAPE](#cape)
+    - [Relative CAPE](#relative-cape)
   - [Strategy](#strategy)
     - [Description](#description)
     - [Weighting Scheme](#weighting-scheme)
@@ -63,11 +66,17 @@ This project hopes to find whether industry momentum exists and the predictive p
 
 This project is entirely written in python. It largely uses the [`xquant`](https://github.com/percy-xu/xquant) library developed by myself. In addition, `pandas`, `numpy`, and `plotly` are used for data processing, computation, and visualization.
 
+### Construction of CAPE and Relative CAPE
+
+#### CAPE
+
+#### Relative CAPE
+
 ### Strategy
 
 #### Description
 
-My index is, in essence, an **"index of indices"** - much like a fund of funds (FOF) in terms of structure. For this project, I am defining the CITIC Industry Indices (中信行业指数) as the stock selection universe. The CITIC Industry Indices includes daily-computed index for 28 industries starting from 2004-12-31.
+My index is, in essence, an **"index of indices"** - much like a fund of funds (FOF) in terms of structure. For this project, I am defining the *TO_BE_CONFIRMED* as the stock selection universe.
 
 At a cross-section, the *Relative CAPE Ratio* is computed for every industry. Industries are ranked by their Relative CAPE Ratios. The 3 industries with the highest Relative CAPE are underweighted and the 3 industries with the lowest Relative CAPE are overweighted.
 
