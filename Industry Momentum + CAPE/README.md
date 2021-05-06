@@ -72,9 +72,9 @@ This project is entirely written in python. It largely uses the [`xquant`](https
 
 No matter how you twist it, CAPE is just a variation of the traditional P/E-ratio. As mentioned, it is adjusted for business cycles to make long-run predictions. But for now let us step back and look at the traditional P/E-ratio, which in period $t$ is defined as:
 
-$\text{P/E-ratio}_{t}=\frac{Price_{t}}{Earning_{t}}$
+<!-- $\text{P/E-ratio}_{t}=\frac{Price_{t}}{Earning_{t}}$ -->
 
-![equation](https://latex.codecogs.com/gif.latex?\text{P/E-ratio}_{t}=\frac{Price_{t}}{Earning_{t}})
+![equation](https://latex.codecogs.com/svg.latex?\text{P/E-ratio}_{t}=\frac{Price_{t}}{Earning_{t}})
 
 Both the denominator and the numerator need to be modified for the long-run, but only slightly. We first consider the denominator. To reflect the true cash flow received by the shareholders, Shiller and Bunn constructed a "total return" price series which in period $t$ is defined as:
 
