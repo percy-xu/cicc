@@ -70,7 +70,7 @@ This project is entirely written in python. It largely uses the [`xquant`](https
 
 #### CAPE
 
-No matter how you twist it, CAPE is just a variation of the traditional P/E-ratio. As mentioned, it is adjusted for business cycles to make long-run predictions. But for now let us step back and look at the traditional P/E-ratio, which in period *t* is defined as:
+As intimidating as it may sound, CAPE is no more than a variation of the traditional P/E-ratio. As mentioned, it is adjusted for business cycles to make long-run predictions. But for now let us step back and look at the traditional P/E-ratio, which in period *t* is defined as:
 
 <!-- $\text{P/E-ratio}_{t}=\frac{Price_{t}}{Earning_{t}}$ -->
 
@@ -82,17 +82,25 @@ Both the denominator and the numerator need to be modified for the long-run, but
 
 ![equation](https://latex.codecogs.com/svg.latex?P^{TR}_{t}=\frac{Price_t+Dividend_{t-1}}{Price_{t-1}})
 
-By taking dividends into account, differences in company payout policies are effectively eliminated. We now turn to the numerator, which is where the long-term forecasting power originates. By taking the geometric mean of earnings in the last *n* years, we get an "averaged out" earning which in year *t* is defined as:
+By taking dividends into account, differences in company payout policies are effectively eliminated. We now turn to the numerator, which is where the long-term forecasting power originates. At every year *x*, we compute the scaled earning by multiplying the earning with the ratio of total return price and price to reflect the change we made earlier from the price series to the total return price series.
+
+<!-- $e^{scaled}_{x} = e_{x}\cdot\frac{P^{TR}_{x}}{Price_{x}}$ -->
+
+![equation](https://latex.codecogs.com/svg.latex?e^{scaled}_{x}=e_{x}\cdot\frac{P^{TR}_{x}}{Price_{x}})
+
+Now we have a total return price series and a scaled earnings series. They are then adjusted for inflation using the [Consumer Price Index from the FRED](https://fred.stlouisfed.org/series/CHNCPIALLQINMEI).
+
+By taking the arithmetic mean of these scaled, inflation-adjusted earnings in the last *n* years, we get an "averaged out" earning which in year *t* is defined as:
 
 <!-- $\overline{e}_{t}={\frac{1}{n}}(\sum^{n}_{i=1}e_{t-n+i})=\frac{e_{t-n}+e_{t-n+1}+\cdots+e_{t-1}+e_{t}}{n}$ -->
 
 ![equation](https://latex.codecogs.com/svg.latex?\overline{e}_{t}={\frac{1}{n}}(\sum^{n}_{i=1}e_{t-n+i})=\frac{e_{t-n}+e_{t-n+1}+\cdots+e_{t-1}+e_{t}}{n})
 
-At every year *x*, we compute the scaled earning by multiplying the earning with the ratio of total return price and price to account for the change we made earlier from the price series to the total return price series.
+Finally, much like the traditional P/E-ratio, simply divide the inflation-adjusted total return price by the average earnings (inflation-adjusted in each year) to calculate the CAPE ratio in period *t*.
 
-<!-- $e^{scaled}_{x} = e_{x}\cdot\frac{P^{TR}_{x}}{Price_{x}}$ -->
+<!-- $CAPE_{t}=\frac{P^{TR}_{t}}{\overline{e}_{t}}$ -->
 
-![equation](https://latex.codecogs.com/svg.latex?e^{scaled}_{x}=e_{x}\cdot\frac{P^{TR}_{x}}{Price_{x}})
+![equation](https://latex.codecogs.com/svg.latex?CAPE_{t}=\frac{P^{TR}_{t}}{\overline{e}_{t}})
 
 #### Relative CAPE
 
