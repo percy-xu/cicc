@@ -96,7 +96,9 @@ By taking the arithmetic mean of these scaled, inflation-adjusted earnings in th
 
 ![equation](https://latex.codecogs.com/svg.latex?\overline{e}_{t}={\frac{1}{n}}(\sum^{n}_{i=1}e_{t-n+i})=\frac{e_{t-n}+e_{t-n+1}+\cdots+e_{t-1}+e_{t}}{n})
 
-Finally, much like the traditional P/E-ratio, simply divide the inflation-adjusted total return price by the average earnings (inflation-adjusted in each year) to calculate the CAPE ratio in period *t*.
+When CAPE was first defined, Campbell and Shiller took *n=10* - meaning 10 years of adjusted earnings are averaged. In this project, we shorten this period to 5 years because the China-A Shares is very young and market data is limited. This is a comprise, but it does not contradict the spirit of CAPE. Shiller frequently refers to *Market Analysis*, a textbook written by Graham & Dodd in 1934 that mentions a meaningful valuation should look at earnings *"not less than five years, preferably seven or ten years"*. It can be argued, therefore, five years still (closely) qualifies as a meaningful valuation period albeit being significantly shorter than ten years.
+
+Finally, much like the traditional P/E-ratio, simply divide the inflation-adjusted total return price by the average earnings (inflation-adjusted in each year) to calculate the CAPE ratio in period *t*. The CAPE ratio is computed quarterly.
 
 <!-- $\text{CAPE}_{t}=\frac{P^{TR}_{t}}{\overline{e}_{t}}$ -->
 
@@ -106,13 +108,13 @@ Finally, much like the traditional P/E-ratio, simply divide the inflation-adjust
 
 In an industry-rotation strategy, we would want to compare one industry with other industries. But does it really make sense to compare the CAPE ratios across industries? CAPE ratio is a measure of value, and some industries are just inherently more expensive than others by nature. The technology industry, for example, is almost always more likely to have a higher CAPE ratio than the consumer staples industry. This is why Shiller and Bunn computed a *Relative CAPE Ratio* for every industry. The Relative CAPE ratio of an industry is computed by comparing its current CAPE against historical CAPE ratios, therefore making cross-industry comparisons possible.
 
-The Relative CAPE ratio is calculated by dividing the current CAPE ratio of an industry by the average of its own CAPE ratios in the last 20 years. In this project, we shorten this period to 10 years (40 periods, since CAPE is computed quarterly) because the China-A Shares is very young and market data is limited. Historical CAPE ratios are winsorized at the 5% level, removing outlier periods in an industry.
+The Relative CAPE ratio is calculated by dividing the current CAPE ratio of an industry by the average of its own CAPE ratios in the last 20 years. In this project, we shorten this period to 10 years (or 40 periods, as CAPE is computed quarterly) for the same reason for using 5 years of data when computing the CAPE ratio. Historical CAPE ratios are winsorized at the 5% level, removing outlier periods and reducing turbulence.
 
 For a formulaic expression, the Relative CAPE in period *t* is defined as:
 
 <!-- $\text{Relative CAPE}_{t}=\frac{\text{CAPE}_t}{{\frac{1}{40}\sum^{40}_{i=1}\text{CAPE}_{t-40+i}}}$ -->
 
-![equation](https://latex.codecogs.com/svg.latex?\text{Relative&space;CAPE}_{t}=\frac{\text{CAPE}_t}{{\frac{1}{40}\sum^{40}_{i=1}\text{CAPE}_{x-40&plus;i}}})
+![equation](https://latex.codecogs.com/svg.latex?\text{Relative&space;CAPE}_{t}=\frac{\text{CAPE}_t}{{\frac{1}{40}\sum^{40}_{i=1}\text{CAPE}_{t-40&plus;i}}})
 
 ### Strategy
 
