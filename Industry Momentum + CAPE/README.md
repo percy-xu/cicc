@@ -34,9 +34,9 @@ Both industry momentum effect and Shiller-CAPE ratio have received significant a
 
 #### Industry Momentum
 
-Eugene Fama, arguably the most prominent researcher on the Efficient Market Hypothesis once said that the momentum effect is *"perhaps the biggest embarrassment to the EMH"*. Indeed, according to the EMH the momentum should not exist at all because past returns and future returns are completely irrelevant. Yet, momentum has been generating consistent excess returns ever since it was first proposed in [Jegadeesh (1993)](https://www.jstor.org/stable/2328882) over the last three decades.
+Eugene Fama, arguably the most prominent researcher on the Efficient Market Hypothesis once said that the momentum effect is *"perhaps the biggest embarrassment to the EMH"*. Indeed, in Fama's world momentum should not exist at all because past returns and future returns are completely irrelevant under the assumptions of the EMH. Yet, momentum has been generating consistent excess returns ever since it was first proposed in [Jegadeesh (1993)](https://www.jstor.org/stable/2328882) over the last three decades.
 
-The question that follows is naturally: *"What causes momentum?"* [Moskowitz (1999)](https://www.jstor.org/stable/798005) offers an interesting theory: **momentum effects can be explained by industries**. Moskowitz concluded that stocks within the same industry are under the same regulatory constraints and affected by the same external factors, which causes their stock prices to move in the same direction. Further, the momentum effect largely disappears once industry is being controlled.
+The question that follows is naturally: *What causes momentum?* [Moskowitz (1999)](https://www.jstor.org/stable/798005) offers an interesting theory: **momentum effects can be explained by industries**. Moskowitz concluded that stocks within the same industry are under the same regulatory constraints and affected by the same external factors, which causes their stock prices to move in the same direction. Further, the momentum effect largely disappears once industry is being controlled.
 
 So the next question is: *If industries do explain momentum, then why bother with individual stocks?* Moskowitz answers this question as well. He made a portfolio consisted of industry indices only and rotated among the recent winning industries, and found that the excess return exceeds that of a portfolio of recent winning individual stocks.
 
@@ -44,7 +44,7 @@ So the next question is: *If industries do explain momentum, then why bother wit
 
 If such thing as an economics prophet exists, Robert Shiller will surely be one of them. Shiller famously predicted bursts of the dot com bubble and the real estate bubble in the early and mid 2000s, and one his crystal balls was the CAPE Ratio Shiller developed with John Campbell.
 
-**C**yclically **A**djusted **P**rice-**E**arnings ratio is centered around the simple idea of *"averaging out fluctuations"*. Shiller argues that measurements of company performance such as the PE ratio or dividend yield can be overly influenced by short term fluctuations. For example, the PE ratio for a company in 2021 Q1 alone can be affected by a temporary price shock and therefore do not have significant predictive power for future returns. When forecasting long-term future returns, one should really look at long-term past returns. **CAPE is calculated by taking the average of inflation-adjusted earnings and prices over the past 10 years, or in short, the smoothed earnings.** [Campbell and Shiller (1998)](https://jpm.pm-research.com/content/24/2/11) examined the smoothed earnings of the US stock market at the turn of the century and concluded it was dangerously overvalued. Sure enough, the dot com bubble bursted in less than 5 years.
+**C**yclically **A**djusted **P**rice-**E**arnings ratio is centered around the simple idea of *"averaging out fluctuations"*. Shiller argues that measurements of company performance such as the P/E-ratio or dividend yield can be overly influenced by short term fluctuations. For example, the PE ratio for a company in 2021 Q1 alone can be affected by a temporary price shock and therefore do not have significant predictive power for future returns. When forecasting long-term future returns, one should really look at long-term past returns. **CAPE is the ratio of prices and the average inflation-adjusted earnings over the past 10 years, or in short, the smoothed earnings.** [Campbell and Shiller (1998)](https://jpm.pm-research.com/content/24/2/11) examined the smoothed earnings of the US stock market at the turn of the century and concluded that the stock market was dangerously overvalued. Sure enough, the dot com bubble bursted in less than 5 years.
 
 More recently, [Bunn and Shiller (2014)](https://www.nber.org/papers/w20370) examined the CAPE ratio in a larger historical scope. Going back to as far as the beginning of the 1870s, Bunn and Shiller computed the CAPE ratios for the Industrials sector, the Utilities sector, and the Railroads sector. They then designed a sector rotation strategy that overweighted the undervalued (cheap) sector and underweighted the overvalued (expensive) sector. This strategy provided 1.09% annualized, inflation-adjusted excess total return over 110 years.
 
@@ -56,7 +56,7 @@ Combining momentum and value is nothing new. [Asness (1997)](https://www.jstor.o
 
 Much of the existing literatures on industry momentum and Shiller-CAPE limit their scopes to the US stock market, and little has been done to test these theories in the Chinese stock market. This project aims to fill these gaps.
 
-The Chinese stock market (China A-shares) is perhaps one of the most unique equities market in the world, marked by its imbalanced market participants. Retail investors far outnumber institutional investors, which makes market behavior in the A-shares vastly different from other equities markets. For example, China A-Shares has an abnormally high turnover rate, and many believe *reversal* is a better predictor than *momentum* in China A-shares.
+Marked by its imbalanced composition of market participants, the Chinese stock market (China A-shares) is perhaps one of the most unique equities market in the world. Retail investors far outnumber institutional investors, which makes the market behavior in the A-shares vastly different from other equities markets. For example, China A-Shares has an abnormally high turnover rate, and many believe reversal to be a better predictor than momentum in China A-shares.
 
 This project hopes to find whether industry momentum exists and the predictive power of the Shiller-CAPE ratio in China A-shares. The performance of an index that incorporates industry momentum and Shiller-CAPE will likely give us the answer.
 
@@ -88,15 +88,15 @@ By taking dividends into account, differences in company payout policies are eff
 
 ![equation](https://latex.codecogs.com/svg.latex?e^{scaled}_{x}=e_{x}\cdot\frac{P^{TR}_{x}}{P_{x}})
 
-Now we have a total return price series and a scaled earnings series. They are then adjusted for inflation using the [Consumer Price Index from the FRED](https://fred.stlouisfed.org/series/CHNCPIALLQINMEI).
+Now we have a total return price series and a scaled earnings series. They are then adjusted for inflation using the [Consumer Price Index](https://fred.stlouisfed.org/series/CHNCPIALLQINMEI).
 
-By taking the arithmetic mean of these scaled, inflation-adjusted earnings in the last *n* years, we get an "averaged out" earning which in year *t* is defined as:
+By taking the arithmetic mean of these scaled, inflation-adjusted earnings in the last *n* years, we get an "averaged out" earning which in period *t* is defined as:
 
 <!-- $\overline{e}_{t}={\frac{1}{n}}(\sum^{n}_{i=1}e_{t-n+i})=\frac{e_{t-n}+e_{t-n+1}+\cdots+e_{t-1}+e_{t}}{n}$ -->
 
 ![equation](https://latex.codecogs.com/svg.latex?\overline{e}_{t}={\frac{1}{n}}(\sum^{n}_{i=1}e_{t-n+i})=\frac{e_{t-n}+e_{t-n+1}+\cdots+e_{t-1}+e_{t}}{n})
 
-When CAPE was first defined, Campbell and Shiller took *n=10* - meaning 10 years of adjusted earnings are averaged. In this project, we shorten this period to 5 years because the China-A Shares is very young and market data is limited. This is a comprise, but it does not contradict the spirit of CAPE. Shiller frequently refers to *Market Analysis*, a textbook written by Graham & Dodd in 1934 that mentions a meaningful valuation should look at earnings *"not less than five years, preferably seven or ten years"*. It can be argued, therefore, five years still (closely) qualifies as a meaningful valuation period albeit being significantly shorter than ten years.
+Campbell and Shiller took *n=10* they first defined the CAPE ratio, meaning 10 years of adjusted earnings are averaged. In this project, we shorten this period to 5 years because the China A-Shares is very young and our market data only goes back to 2000. This is a compromise I am reluctant to make, but we should see that it does not contradict the spirit of the CAPE ratio. In his papers, Shiller refers to *Market Analysis*, a textbook written by Graham & Dodd in 1934 that mentions a meaningful valuation should look at earnings *"not less than five years, preferably seven or ten years"*. It can be argued, therefore, five years still (marginally) qualifies as a meaningful valuation period albeit being significantly shorter than ten years.
 
 Finally, much like the traditional P/E-ratio, simply divide the inflation-adjusted total return price by the average earnings (inflation-adjusted in each year) to calculate the CAPE ratio in period *t*. The CAPE ratio is computed quarterly.
 
@@ -106,11 +106,11 @@ Finally, much like the traditional P/E-ratio, simply divide the inflation-adjust
 
 #### Relative CAPE
 
-In an industry-rotation strategy, we would want to compare one industry with other industries. But does it really make sense to compare the CAPE ratios across industries? CAPE ratio is a measure of value, and some industries are just inherently more expensive than others by nature. The technology industry, for example, is almost always more likely to have a higher CAPE ratio than the consumer staples industry. This is why Shiller and Bunn computed a *Relative CAPE Ratio* for every industry. The Relative CAPE ratio of an industry is computed by comparing its current CAPE against historical CAPE ratios, therefore making cross-industry comparisons possible.
+In an industry-rotation strategy we would, in one way or another, compare one industry with other industries. But does it really make sense to compare the CAPE ratios across industries? CAPE ratio is a measure of value, and some industries are just inherently more expensive than others. The technology industry, for example, is more likely to have a higher CAPE ratio than the consumer staples industry. If we compared the "raw" CAPE ratios across industries in our strategy, the technology industry is almost never going to be overweighted because it will always be relatively more expensive. (And our industry-rotation strategy would not rotate so much at all!) This is why Shiller and Bunn computed a *Relative CAPE Ratio* for every industry. The Relative CAPE ratio of an industry is calculated by comparing its current CAPE ratio against its historical CAPE ratios. In other words, the Relative CAPE ratio of an industry is only determined by its own history and completely irrelevant with other industries and therefore making meaningful cross-industry comparisons possible.
 
-The Relative CAPE ratio is calculated by dividing the current CAPE ratio of an industry by the average of its own CAPE ratios in the last 20 years. In this project, we shorten this period to 10 years (or 40 periods, as CAPE is computed quarterly) for the same reason for using 5 years of data when computing the CAPE ratio. Historical CAPE ratios are winsorized at the 5% level, removing outlier periods and reducing turbulence.
+The Relative CAPE ratio is calculated by dividing the current CAPE ratio of an industry by the average of its own CAPE ratios in the last 20 years. In this project, we shorten this period to 10 years (or 40 periods, as CAPE ratios are computed quarterly) for the same reason for using 5 years of data when computing the CAPE ratio. Historical CAPE ratios are winsorized at the 5% level, removing outlier periods and reducing turbulence.
 
-For a formulaic expression, the Relative CAPE in period *t* is defined as:
+For a formulaic expression, the Relative CAPE ratio in period *t* is defined as:
 
 <!-- $\text{Relative CAPE}_{t}=\frac{\text{CAPE}_t}{{\frac{1}{40}\sum^{40}_{i=1}\text{CAPE}_{t-40+i}}}$ -->
 
@@ -122,13 +122,13 @@ For a formulaic expression, the Relative CAPE in period *t* is defined as:
 
 My index is, in essence, an **"index of indices"** - much like a fund of funds (FOF) in terms of structure. For this project, I am defining the *TBD* as the stock selection universe.
 
-At a cross-section, the *Relative CAPE Ratio* is computed for every industry. Industries are ranked by their Relative CAPE Ratios. The *TBD* industries with the highest Relative CAPE are underweighted and the *TBD* industries with the lowest Relative CAPE are overweighted.
+At a cross-section, the Relative CAPE ratio is computed for every industry. Industries are then ranked by their Relative CAPE ratios. The *TBD*(top quintile) industries with the highest Relative CAPE ratio are underweighted and the *TBD*(bottom quintile) industries with the lowest Relative CAPE ratio are overweighted.
 
-This leaves us with *TBD* remaining industries. By calculating each industry's performance in the past 6 months, we categorize them into winners and losers. Winners (industries with strong momentum) are overweighted and losers (industries with weak momentum) are underweighted.
+This leaves us with *TBD* remaining industries. By calculating each industry's performance in the past 6 months, we categorize them into winners and losers. To conform the number of over/underweighted industries based on Relative CAPE ratios, the top *TBD* winners (industries with strong momentum) are overweighted and the bottom *TBD* losers (industries with weak momentum) are underweighted.
 
 #### Weighting Scheme
 
-Bunn and Shiller used a point-based weighting scheme which I find easy to understand and implement. A adapted version of this weighting scheme is used in this project. Every time my index is computed, each industry in the cross-section start with 2 points. 1 point is added when an industry is overweighted and 1 point is subtracted when an industry is underweighted. We now have 28 industries with points ranging from 1 to 3. Respective weights are then calculated for each industry based on its point.
+Bunn and Shiller used an elegant point-based weighting scheme which I find easy to understand and implement. A adapted version of this weighting scheme is used in this project. Every time my index is computed, each industry in the cross-section start with 2 points. 1 point is added when an industry is overweighted and 1 point is subtracted when an industry is underweighted. We now have *TBD* industries with points ranging from 1 to 3. Respective weights are then calculated for each industry based on its point.
 
 #### Look-back Period
 
