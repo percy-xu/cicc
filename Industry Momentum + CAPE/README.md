@@ -120,11 +120,11 @@ For a formulaic expression, the Relative CAPE ratio in period *t* is defined as:
 
 #### Description
 
-My index is, in essence, an **"index of indices"** - much like a fund of funds (FOF) in terms of structure. For this project, I am defining the *TBD* as the stock selection universe.
+My index is, in essence, an **"index of indices"** - much like a fund of funds (FOF) in terms of structure. For this project, I am defining the WIND Industry Index Series including 11 sectors (much like the GICS&reg; it bases on) as the stock selection universe.
 
-At a cross-section, the Relative CAPE ratio is computed for every industry. Industries are then ranked by their Relative CAPE ratios. The *TBD*(top quintile) industries with the highest Relative CAPE ratio are underweighted and the *TBD*(bottom quintile) industries with the lowest Relative CAPE ratio are overweighted.
+At a cross-section, the Relative CAPE ratio is computed for every industry. Industries are then ranked by their Relative CAPE ratios. The 2 (top quintile) industries with the highest Relative CAPE ratio are underweighted and the 2 (bottom quintile) industries with the lowest Relative CAPE ratio are overweighted.
 
-This leaves us with *TBD* remaining industries. By calculating each industry's performance in the past 6 months, we categorize them into winners and losers. To conform the number of over/underweighted industries based on Relative CAPE ratios, the top *TBD* winners (industries with strong momentum) are overweighted and the bottom *TBD* losers (industries with weak momentum) are underweighted.
+This leaves us with 7 remaining industries. By calculating each industry's performance in the past 6 months, we categorize them into winners and losers. To conform with the number of over/underweighted industries based on Relative CAPE ratios, the top 2 winners (industries with strong momentum) are overweighted and the bottom 2 losers (industries with weak momentum) are underweighted.
 
 #### Weighting Scheme
 
