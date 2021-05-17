@@ -2,54 +2,86 @@ import pandas as pd
 import numpy as np
 import os
 import plotly.express as px
+from scipy.stats.mstats import winsorize
 
 from xquant.backtest.data import Data
 from xquant.strategy import Strategy
+from xquant.util import quarter_generator
+
 
 data = Data(data={
-    'df_price': pd.read_csv('Industry Momentum + CAPE\\data\\price.csv', index_col=['date'], parse_dates=['date']),
-    'df_mkt_cap': pd.read_csv('Industry Momentum + CAPE\\data\\market_cap.csv', index_col=['date'], parse_dates=['date']),
-    'df_industry_idx': pd.read_csv('Industry Momentum + CAPE\\data\\WIND_industry_index.csv', index_col=['Date'], parse_dates=['Date']),
-    'df_idx_members': pd.read_csv('Industry Momentum + CAPE\\data\\WIND_index_members.csv', parse_dates=['included', 'excluded']),
-    'df_earnings': pd.read_csv('Industry Momentum + CAPE\\data\\earnings.csv', parse_dates=['announced', 'reported']),
-    'df_dividends': pd.read_csv('Industry Momentum + CAPE\\data\\dividends.csv', parse_dates=['announced'])
+    'industry_index': pd.read_csv('Industry Momentum + CAPE\\data\\WIND_industry_index.csv', index_col=['Date'], parse_dates=['Date']),
+    'total_returns': pd.read_csv('Industry Momentum + CAPE\\data\\quarterly_total_returns.csv', index_col=['Date'], parse_dates=['Date']),
+    'earnings': pd.read_csv('Industry Momentum + CAPE\\data\\quarterly_earnings.csv', index_col=['Date'], parse_dates=['Date'])
 })
 
-sectors = list(data.get_data('df_industry_idx').columns)
+SECTORS = list(data.get_data('industry_index').columns)
+PERIODS = data.get_data('total_returns').index
 
 class CAPE_MOM(Strategy):
 
     def __init__(self, strategy_name) -> None:
         super().__init__(strategy_name)
 
-    # TODO
-    def get_cape(ticker, date) -> float:
+    def get_cape(self, industry, date) -> float:
         '''calculates the absolute (i.e. raw) Shiller-CAPE ratio of an industry'''
-        pass
+        df_earnings = data.get_data('earnings')
+        df_earnings = df_earnings.loc[:date]
+        df_tot_rtns = data.get_data('total_returns')
+        df_tot_rtns = df_tot_rtns.loc[:date].tail(1)
 
-    # TODO
-    def get_relative_cape(ticker, date) -> float:
+        # if there is insufficient data, raise error
+        if len(df_earnings) < 20:
+            raise Exception('Insufficient data, need at least 5 years to calculate CAPE')
+        
+        df_earnings = df_earnings.tail(20)
+        earning = df_earnings.mean()[industry]
+        tot_rtn = df_tot_rtns[industry].values[0]
+
+        cape = tot_rtn/earning
+        return cape
+        
+    def get_relative_cape(self, industry, date, n_period=40) -> float:
         '''calculates the relative Shiller-CAPE ratio of an industry'''
-        pass
-    
-    # TODO
-    def get_relative_cape_rank(ticker, date) -> float:
-        '''calculates the percentile rank of an industry's relative Shiller-CAPE ratio among peers'''
-        pass
+        periods = PERIODS[PERIODS<=date][-n_period:]
+        if len(periods) < n_period:
+            raise Exception('Insufficient data, need at least 10 years to calculate Relative CAPE')
+
+        capes = [self.get_cape(industry, period) for period in periods]
+        capes = list(winsorize(capes, limits=[0.05,0.05]))
+        relative_cape = capes[-1] / np.mean(capes)
+
+        return relative_cape
+
+    def get_relative_cape_rank(self, industry, date, n_period) -> float:
+        '''calculates the numeric rank of an industry's relative Shiller-CAPE ratio among peers'''
+        rel_capes = [self.get_relative_cape(sector, date, n_period) for sector in SECTORS]
+        rel_capes_dict = dict(zip(SECTORS, rel_capes))
+
+        series = pd.Series(rel_capes_dict).dropna()
+        df = pd.DataFrame(series, columns=['rel_cape'])
+        df.sort_values(by=['rel_cape'], inplace=True)
+        df['rank'] = np.arange(1,len(df)+1)
+        
+        rank = df.at[industry, 'rank']
+        return rank
 
     # TODO
-    def get_ind_mom(ticker, date, look_back=6) -> float:
+    def get_mom(self, industry, date, look_back=6) -> float:
         '''calculates the momentum of an industry'''
         pass
 
     # TODO
-    def get_mom_rank(ticker, date) -> float:
-        '''calculates the percentile rank of an industry's momentum among peers'''
+    def get_mom_rank(self, industry, date) -> float:
+        '''calculates the numeric rank of an industry's momentum among peers'''
         pass
 
     # TODO
-    def stock_selection() -> dict:
+    def stock_selection(self, date) -> dict:
         '''overrides the stock_selection method in the parent class'''
         pass
 
-# cape_mom = CAPE_MOM(strategy_name='CAPE + Momentum')
+
+if __name__ == '__main__':
+    cape_mom = CAPE_MOM(strategy_name='CAPE + Momentum')
+    cape_mom.get_relative_cape_rank('Financials','20191231',20)
