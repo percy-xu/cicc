@@ -14,7 +14,8 @@ from xquant.util import closest_trading_day
 data = Data(data={
     'industry_index': pd.read_csv('Industry Momentum + CAPE\\data\\WIND_industry_index.csv', index_col=['Date'], parse_dates=['Date']),
     'total_returns': pd.read_csv('Industry Momentum + CAPE\\data\\quarterly_total_returns.csv', index_col=['Date'], parse_dates=['Date']),
-    'earnings': pd.read_csv('Industry Momentum + CAPE\\data\\quarterly_earnings.csv', index_col=['Date'], parse_dates=['Date'])
+    'earnings': pd.read_csv('Industry Momentum + CAPE\\data\\quarterly_earnings.csv', index_col=['Date'], parse_dates=['Date']),
+    'benchmark': pd.read_csv('Industry Momentum + CAPE\\data\\csi_300.csv', index_col=['date'], parse_dates=['date'])
 })
 
 SECTORS = list(data.get_data('industry_index').columns)
