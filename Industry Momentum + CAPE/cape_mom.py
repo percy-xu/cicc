@@ -1,14 +1,13 @@
-from datetime import timedelta
-from numpy.testing._private.utils import GetPerformanceAttributes
 import pandas as pd
 import numpy as np
-import os
-import plotly.express as px
 from scipy.stats.mstats import winsorize
 from dateutil.relativedelta import relativedelta
+from tqdm import tqdm
 
 from xquant.backtest.data import Data
+from xquant.backtest.backtest import run_backtest
 from xquant.strategy import Strategy
+from xquant.portfolio import Portfolio
 from xquant.util import closest_trading_day
 
 
@@ -107,13 +106,13 @@ class CAPE_MOM(Strategy):
         rank = df.at[industry, 'rank']
         return rank
 
-    def stock_selection(self, date) -> dict:
+    def stock_selection(self, funds, date) -> Portfolio:
         '''overrides the stock_selection method in the parent class'''
         points = [2] * len(SECTORS)
         points_dict = dict(zip(SECTORS, points))
 
-        for industry in SECTORS:
-            rel_cape_rank = self.get_relative_cape_rank(industry, date, 10)
+        for industry in tqdm(SECTORS):
+            rel_cape_rank = self.get_relative_cape_rank(industry, date, 10) # NEED TO ADJUST TO 40
             mom_rank = self.get_mom_rank(industry, date)
             # over/underweight sectors based on their ranks
             if rel_cape_rank <= 2 or mom_rank <= 2:
@@ -123,10 +122,20 @@ class CAPE_MOM(Strategy):
         
         total_points = sum(points_dict.values())
         weights = [points_dict[industry]/total_points for industry in SECTORS]
-        weights_dict = dict(zip(SECTORS, weights))
+        budgets = [funds*weight for weight in weights] # budget available for each industry
         
-        return weights_dict
+        df_prices = data.get_data('industry_index')
+        prices = df_prices.loc[closest_trading_day(date, df_prices.index, 'bfill')]
+        
+        shares = np.divide(budgets, prices)
+        shares_dict = dict(zip(SECTORS, shares))
+
+        portfolio = Portfolio(long=shares_dict, short={}, cash=0)
+        return portfolio
 
 if __name__ == '__main__':
     cape_mom = CAPE_MOM(strategy_name='CAPE + Momentum')
-    cape_mom.stock_selection(pd.Timestamp('20190101'))
+
+    holdings = run_backtest(pd.Timestamp('20180101'), pd.Timestamp('20191231'), cape_mom.stock_selection, 100, 3)
+    
+    
