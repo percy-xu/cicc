@@ -1,4 +1,5 @@
 from datetime import timedelta
+from numpy.testing._private.utils import GetPerformanceAttributes
 import pandas as pd
 import numpy as np
 import os
@@ -55,17 +56,16 @@ class CAPE_MOM(Strategy):
 
         return relative_cape
 
-    def get_relative_cape_rank(self, industry, date, n_period) -> float:
+    def get_relative_cape_rank(self, industry, date, n_period=40) -> float:
         '''calculates the numeric rank of an industry's relative Shiller-CAPE ratio among peers'''
         rel_capes = [self.get_relative_cape(sector, date, n_period) for sector in SECTORS]
         rel_capes_dict = dict(zip(SECTORS, rel_capes))
 
-        series = pd.Series(rel_capes_dict).dropna()
+        series = pd.Series(rel_capes_dict).fillna(99)
         df = pd.DataFrame(series, columns=['rel_cape'])
         df.sort_values(by=['rel_cape'], inplace=True)
         df['rank'] = np.arange(1,len(df)+1)
         
-        print(df)
         rank = df.at[industry, 'rank']
         return rank
 
@@ -104,17 +104,29 @@ class CAPE_MOM(Strategy):
         df.sort_values(by=['momentum'], ascending=False, inplace=True)
         df['rank'] = np.arange(1,len(df)+1)
         
-        print(df)
         rank = df.at[industry, 'rank']
         return rank
 
-    # TODO
     def stock_selection(self, date) -> dict:
         '''overrides the stock_selection method in the parent class'''
-        pass
+        points = [2] * len(SECTORS)
+        points_dict = dict(zip(SECTORS, points))
 
+        for industry in SECTORS:
+            rel_cape_rank = self.get_relative_cape_rank(industry, date, 10)
+            mom_rank = self.get_mom_rank(industry, date)
+            # over/underweight sectors based on their ranks
+            if rel_cape_rank <= 2 or mom_rank <= 2:
+                points_dict[industry] += 1
+            elif rel_cape_rank >= len(SECTORS)-2 or mom_rank >= len(SECTORS)-2:
+                points_dict[industry] -= 1
+        
+        total_points = sum(points_dict.values())
+        weights = [points_dict[industry]/total_points for industry in SECTORS]
+        weights_dict = dict(zip(SECTORS, weights))
+        
+        return weights_dict
 
 if __name__ == '__main__':
     cape_mom = CAPE_MOM(strategy_name='CAPE + Momentum')
-    cape_mom.get_mom_rank('Energy', pd.Timestamp('20190101'))
-    cape_mom.get_relative_cape_rank('Energy', pd.Timestamp('20190101'), 10)
+    cape_mom.stock_selection(pd.Timestamp('20190101'))
