@@ -1,12 +1,14 @@
+from datetime import timedelta
 import pandas as pd
 import numpy as np
 import os
 import plotly.express as px
 from scipy.stats.mstats import winsorize
+from dateutil.relativedelta import relativedelta
 
 from xquant.backtest.data import Data
 from xquant.strategy import Strategy
-from xquant.util import quarter_generator
+from xquant.util import closest_trading_day
 
 
 data = Data(data={
@@ -63,18 +65,48 @@ class CAPE_MOM(Strategy):
         df.sort_values(by=['rel_cape'], inplace=True)
         df['rank'] = np.arange(1,len(df)+1)
         
+        print(df)
         rank = df.at[industry, 'rank']
         return rank
 
-    # TODO
-    def get_mom(self, industry, date, look_back=6) -> float:
+    def get_momentum(self, industry, date, look_back=6) -> float:
         '''calculates the momentum of an industry'''
-        pass
+        # select and truncate series
+        series = data.get_data('industry_index')[industry]
+        series = series[series.index <= date]
+        # calculate lagged return
+        start_date = date - relativedelta(months = 12)
+        end_date = date - relativedelta(months = look_back)
 
-    # TODO
+        returns = []
+        while start_date < end_date:
+            local_end = start_date + relativedelta(months=look_back)
+            period = series.loc[start_date:local_end]
+
+            start_price = period.head(1)[0]
+            end_price = period.tail(1)[0]
+
+            local_return = (end_price/start_price) - 1
+            returns.append(local_return)
+
+            start_date += relativedelta(months=1)
+
+        momentum = np.mean(returns)
+        return momentum
+
     def get_mom_rank(self, industry, date) -> float:
         '''calculates the numeric rank of an industry's momentum among peers'''
-        pass
+        mom_list = [self.get_momentum(sector, date) for sector in SECTORS]
+        mom_dict = dict(zip(SECTORS, mom_list))
+
+        series = pd.Series(mom_dict).dropna()
+        df = pd.DataFrame(series, columns=['momentum'])
+        df.sort_values(by=['momentum'], ascending=False, inplace=True)
+        df['rank'] = np.arange(1,len(df)+1)
+        
+        print(df)
+        rank = df.at[industry, 'rank']
+        return rank
 
     # TODO
     def stock_selection(self, date) -> dict:
@@ -84,4 +116,5 @@ class CAPE_MOM(Strategy):
 
 if __name__ == '__main__':
     cape_mom = CAPE_MOM(strategy_name='CAPE + Momentum')
-    cape_mom.get_relative_cape_rank('Financials','20191231',20)
+    cape_mom.get_mom_rank('Energy', pd.Timestamp('20190101'))
+    cape_mom.get_relative_cape_rank('Energy', pd.Timestamp('20190101'), 10)
