@@ -3,9 +3,11 @@ import numpy as np
 from scipy.stats.mstats import winsorize
 from dateutil.relativedelta import relativedelta
 from tqdm import tqdm
+import plotly.express as px
 
 from xquant.backtest.data import Data
 from xquant.backtest.backtest import run_backtest
+from xquant.backtest.metrics import plot_performance
 from xquant.strategy import Strategy
 from xquant.portfolio import Portfolio
 from xquant.util import closest_trading_day
@@ -35,7 +37,7 @@ class CAPE_MOM(Strategy):
 
         # if there is insufficient data, raise error
         if len(df_earnings) < 20:
-            raise Exception('Insufficient data, need at least 5 years to calculate CAPE')
+            raise Exception('Insufficient data, need at least 5 years (20 quarters) to calculate CAPE')
         
         df_earnings = df_earnings.tail(20)
         earning = df_earnings.mean()[industry]
@@ -107,36 +109,63 @@ class CAPE_MOM(Strategy):
         rank = df.at[industry, 'rank']
         return rank
 
-    def stock_selection(self, funds, date) -> Portfolio:
+    def stock_selection(self, funds, date, scheme='cap') -> Portfolio:
         '''overrides the stock_selection method in the parent class'''
-        points = [2] * len(SECTORS)
-        points_dict = dict(zip(SECTORS, points))
+
+        if scheme == 'shiller':
+            points = [1] * len(SECTORS)
+            points_dict = dict(zip(SECTORS, points))
+            include = SECTORS
+
+        elif scheme == 'cap':
+            include = []
 
         for industry in tqdm(SECTORS):
             rel_cape_rank = self.get_relative_cape_rank(industry, date, 10) # NEED TO ADJUST TO 40
             mom_rank = self.get_mom_rank(industry, date)
             # over/underweight sectors based on their ranks
-            if rel_cape_rank <= 2 or mom_rank <= 2:
-                points_dict[industry] += 1
-            elif rel_cape_rank >= len(SECTORS)-2 or mom_rank >= len(SECTORS)-2:
-                points_dict[industry] -= 1
-        
-        total_points = sum(points_dict.values())
-        weights = [points_dict[industry]/total_points for industry in SECTORS]
-        budgets = [funds*weight for weight in weights] # budget available for each industry
+
+            if scheme == 'shiller':
+                if rel_cape_rank <= 2 or mom_rank <= 2:
+                    points_dict[industry] += 1
+                elif rel_cape_rank >= len(SECTORS)-2 or mom_rank >= len(SECTORS)-2:
+                    points_dict[industry] -= 1
+            
+            elif scheme == 'cap':
+                if rel_cape_rank <= 2 or mom_rank <= 2:
+                    include.append(industry)
         
         df_prices = data.get_data('industry_index')
         prices = df_prices.loc[closest_trading_day(date, df_prices.index, 'bfill')]
         
-        shares = np.divide(budgets, prices)
-        shares_dict = dict(zip(SECTORS, shares))
+        if scheme == 'shiller':
+            total_points = sum(points_dict.values())
+            weights = [points_dict[industry]/total_points for industry in SECTORS]
+
+        elif scheme == 'cap':
+            total_cap = prices[include].sum()
+            weights = [prices[industry]/total_cap for industry in include]
+        
+        budgets = [funds*weight for weight in weights] # budget available for each industry
+        
+        shares = np.divide(budgets, prices[include])
+        shares_dict = dict(zip(include, shares))
 
         portfolio = Portfolio(long=shares_dict, short={}, cash=0)
+        # portfolio.print_portfolio()
+
         return portfolio
 
 if __name__ == '__main__':
     cape_mom = CAPE_MOM(strategy_name='CAPE + Momentum')
+    
+    start = pd.Timestamp('20170701')
+    end = pd.Timestamp('20191231')
 
-    holdings = run_backtest(pd.Timestamp('20180101'), pd.Timestamp('20191231'), cape_mom.stock_selection, 100, 3)
-    
-    
+    holdings = run_backtest(start, end, data.get_data('industry_index'), cape_mom.stock_selection, 100, 3)
+    performance = holdings.generate_performance(data.get_data('industry_index'))
+
+    benchmark = data.get_data('benchmark')['close'][start:end]
+    benchmark = benchmark / benchmark[0] * 100 # normalize
+
+    plot_performance(strategy=performance, benchmark=benchmark)
