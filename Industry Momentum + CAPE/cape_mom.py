@@ -109,9 +109,85 @@ class CAPE_MOM(Strategy):
         rank = df.at[industry, 'rank']
         return rank
 
-    def stock_selection(self, funds, date, scheme='cap') -> Portfolio:
-        '''overrides the stock_selection method in the parent class'''
+    def stock_selection_cape(self, funds, date, scheme) -> Portfolio:
+        if scheme == 'shiller':
+            points = [1] * len(SECTORS)
+            points_dict = dict(zip(SECTORS, points))
+            include = SECTORS
+        elif scheme == 'cap':
+            include = []
+        
+        for industry in tqdm(SECTORS):
+            rel_cape_rank = self.get_relative_cape_rank(industry, date, 10) # NEED TO ADJUST TO 40
+            if scheme == 'shiller':
+                    if rel_cape_rank <= 2:
+                        points_dict[industry] += 1
+                    elif rel_cape_rank >= len(SECTORS)-2:
+                        points_dict[industry] -= 1    
+            elif scheme == 'cap':
+                if rel_cape_rank <= 2:
+                    include.append(industry)
+        
+        df_prices = data.get_data('industry_index')
+        prices = df_prices.loc[closest_trading_day(date, df_prices.index, 'bfill')]
+        
+        if scheme == 'shiller':
+            total_points = sum(points_dict.values())
+            weights = [points_dict[industry]/total_points for industry in SECTORS]
 
+        elif scheme == 'cap':
+            total_cap = prices[include].sum()
+            weights = [prices[industry]/total_cap for industry in include]
+        
+        budgets = [funds*weight for weight in weights] # budget available for each industry
+        
+        shares = np.divide(budgets, prices[include])
+        shares_dict = dict(zip(include, shares))
+
+        portfolio = Portfolio(long=shares_dict, short={}, cash=0)
+
+        return portfolio
+
+    def stock_selection_mom(self, funds, date, scheme) -> Portfolio:
+        if scheme == 'shiller':
+            points = [1] * len(SECTORS)
+            points_dict = dict(zip(SECTORS, points))
+            include = SECTORS
+        elif scheme == 'cap':
+            include = []
+        
+        for industry in tqdm(SECTORS):
+            mom_rank = self.get_mom_rank(industry, date) # NEED TO ADJUST TO 40
+            if scheme == 'shiller':
+                    if mom_rank <= 2:
+                        points_dict[industry] += 1
+                    elif mom_rank >= len(SECTORS)-2:
+                        points_dict[industry] -= 1    
+            elif scheme == 'cap':
+                if mom_rank <= 2:
+                    include.append(industry)
+        
+        df_prices = data.get_data('industry_index')
+        prices = df_prices.loc[closest_trading_day(date, df_prices.index, 'bfill')]
+        
+        if scheme == 'shiller':
+            total_points = sum(points_dict.values())
+            weights = [points_dict[industry]/total_points for industry in SECTORS]
+
+        elif scheme == 'cap':
+            total_cap = prices[include].sum()
+            weights = [prices[industry]/total_cap for industry in include]
+
+        budgets = [funds*weight for weight in weights] # budget available for each industry
+        
+        shares = np.divide(budgets, prices[include].values)
+        shares_dict = dict(zip(include, shares))
+
+        portfolio = Portfolio(long=shares_dict, short={}, cash=0)
+
+        return portfolio
+
+    def stock_selection_combined(self, funds, date, scheme) -> Portfolio:
         if scheme == 'shiller':
             points = [1] * len(SECTORS)
             points_dict = dict(zip(SECTORS, points))
@@ -152,9 +228,16 @@ class CAPE_MOM(Strategy):
         shares_dict = dict(zip(include, shares))
 
         portfolio = Portfolio(long=shares_dict, short={}, cash=0)
-        # portfolio.print_portfolio()
 
         return portfolio
+
+
+    def stock_selection(self, funds, date, scheme='cap') -> Portfolio:
+        '''overrides the stock_selection method in the parent class'''
+        portfolio = self.stock_selection_mom(funds, date, scheme)
+        portfolio.print_portfolio()
+        return portfolio
+        
 
 if __name__ == '__main__':
     cape_mom = CAPE_MOM(strategy_name='CAPE + Momentum')
