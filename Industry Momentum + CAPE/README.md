@@ -20,6 +20,7 @@
     - [Look-back Period](#look-back-period)
   - [Portfolio Management](#portfolio-management)
   - [Back-testing](#back-testing)
+  - [Controlling for Risk-Factors](#controlling-for-risk-factors)
 - [Result](#result)
 
 ## About
@@ -141,6 +142,10 @@ We are constructing an index, and therefore no cash is reserved in the portfolio
 The portfolio is rebalanced quarterly to always incorporate the most recent information.
 
 ### Back-testing
+
+COMING SOON
+
+### Controlling for Risk-Factors
 
 COMING SOON
 
