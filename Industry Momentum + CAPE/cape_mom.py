@@ -7,7 +7,7 @@ import plotly.express as px
 
 from xquant.backtest.data import Data
 from xquant.backtest.backtest import run_backtest
-from xquant.backtest.metrics import plot_performance
+from xquant.backtest.metrics import plot_performance, show_metrics
 from xquant.strategy import Strategy
 from xquant.portfolio import Portfolio
 from xquant.util import closest_trading_day
@@ -234,7 +234,7 @@ class CAPE_MOM(Strategy):
 
     def stock_selection(self, funds, date, scheme='cap') -> Portfolio:
         '''overrides the stock_selection method in the parent class'''
-        portfolio = self.stock_selection_mom(funds, date, scheme)
+        portfolio = self.stock_selection_combined(funds, date, scheme)
         portfolio.print_portfolio()
         return portfolio
         
@@ -242,7 +242,7 @@ class CAPE_MOM(Strategy):
 if __name__ == '__main__':
     cape_mom = CAPE_MOM(strategy_name='CAPE + Momentum')
     
-    start = pd.Timestamp('20160701')
+    start = pd.Timestamp('20100701')
     end = pd.Timestamp('20191231')
 
     holdings = run_backtest(start, end, data.get_data('industry_index'), cape_mom.stock_selection, 100, 3)
@@ -252,3 +252,4 @@ if __name__ == '__main__':
     benchmark = benchmark / benchmark[0] * 100 # normalize
 
     plot_performance(strategy=performance, benchmark=benchmark)
+    show_metrics(strategy=performance, benchmark=benchmark)
