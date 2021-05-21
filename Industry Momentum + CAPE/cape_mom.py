@@ -242,7 +242,7 @@ class CAPE_MOM(Strategy):
 if __name__ == '__main__':
     cape_mom = CAPE_MOM(strategy_name='CAPE + Momentum')
     
-    start = pd.Timestamp('20170701')
+    start = pd.Timestamp('20160701')
     end = pd.Timestamp('20191231')
 
     holdings = run_backtest(start, end, data.get_data('industry_index'), cape_mom.stock_selection, 100, 3)
