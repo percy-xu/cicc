@@ -10,6 +10,7 @@
   - [Momentum and Value](#momentum-and-value)
 - [Motivation](#motivation)
 - [Methodology](#methodology)
+  - [Data](#data)
   - [Dependencies](#dependencies)
   - [Construction of CAPE and Relative CAPE](#construction-of-cape-and-relative-cape)
     - [CAPE](#cape)
@@ -62,6 +63,10 @@ Marked by its imbalanced composition of market participants, the Chinese stock m
 This project hopes to find whether industry momentum exists and the predictive power of the Shiller-CAPE ratio in China A-shares. The performance of an index that incorporates industry momentum and Shiller-CAPE will likely give us the answer.
 
 ## Methodology
+
+### Data
+
+There are 5 datasets used in this project to compute relevant metrics. The first four come from WIND, and the last one come from the FRED. The first dataset is the WIND industry index which includes daily data from 1999-12-30 to 2020-12-30. The second dataset is the WIND industry composition which maps the index composition of an industry to a given time. The third and fourth datasets are the corporate earnings and dividends from 1999 to 2020. The fifth and final dataset is the CPI levels for China used to adjust for inflation.
 
 ### Dependencies
 
