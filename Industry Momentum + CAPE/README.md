@@ -58,8 +58,6 @@ Combining momentum and value is nothing new. [Asness (1997)](https://www.jstor.o
 
 Much of the existing literatures on industry momentum and Shiller-CAPE limit their scopes to the US stock market, and little has been done to test these theories in the Chinese stock market. This project aims to fill these gaps.
 
-Marked by its imbalanced composition of market participants, the Chinese stock market (China A-shares) is perhaps one of the most unique equity markets in the world. Retail investors far outnumber institutional investors, which makes the market behavior in the A-shares vastly different from other equities markets. For example, China A-Shares has an abnormally high turnover rate, and many believe reversal to be a better predictor than momentum in China A-shares.
-
 This project hopes to find whether industry momentum exists and the predictive power of the Shiller-CAPE ratio in China A-shares. The performance of an index that incorporates industry momentum and Shiller-CAPE will likely give us the answer.
 
 ## Methodology
