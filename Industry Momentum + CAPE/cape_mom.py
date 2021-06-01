@@ -1,22 +1,19 @@
-import pandas as pd
 import numpy as np
-from scipy.stats.mstats import winsorize
+import pandas as pd
 from dateutil.relativedelta import relativedelta
+from scipy.stats.mstats import winsorize
 from tqdm import tqdm
-import plotly.express as px
-
-from xquant.backtest.data import Data
 from xquant.backtest.backtest import run_backtest
+from xquant.backtest.data import Data
 from xquant.backtest.metrics import plot_performance, show_metrics
-from xquant.strategy import Strategy
 from xquant.portfolio import Portfolio
+from xquant.strategy import Strategy
 from xquant.util import closest_trading_day
 
-
 data = Data(data={
-    'industry_index': pd.read_csv('Industry Momentum + CAPE\\data\\WIND_industry_index.csv', index_col=['Date'], parse_dates=['Date']),
-    'total_returns': pd.read_csv('Industry Momentum + CAPE\\data\\quarterly_total_returns.csv', index_col=['Date'], parse_dates=['Date']),
-    'earnings': pd.read_csv('Industry Momentum + CAPE\\data\\quarterly_earnings.csv', index_col=['Date'], parse_dates=['Date']),
+    'industry_index': pd.read_csv('Industry Momentum + CAPE\\data\\WIND_II_industry_index.csv', index_col=['Date'], parse_dates=['Date']),
+    'total_returns': pd.read_csv('Industry Momentum + CAPE\\data\\quarterly_total_returns_II.csv', index_col=['Date'], parse_dates=['Date']),
+    'earnings': pd.read_csv('Industry Momentum + CAPE\\data\\quarterly_earnings_II.csv', index_col=['Date'], parse_dates=['Date']),
     'benchmark': pd.read_csv('Industry Momentum + CAPE\\data\\csi_300.csv', index_col=['date'], parse_dates=['date'])
 })
 
@@ -42,7 +39,7 @@ class CAPE_MOM(Strategy):
         df_earnings = df_earnings.tail(20)
         earning = df_earnings.mean()[industry]
         tot_rtn = df_tot_rtns[industry].values[0]
-
+        
         cape = tot_rtn/earning
         return cape
         
@@ -111,21 +108,21 @@ class CAPE_MOM(Strategy):
 
     def stock_selection_cape(self, funds, date, scheme) -> Portfolio:
         if scheme == 'shiller':
-            points = [1] * len(SECTORS)
+            points = [2] * len(SECTORS)
             points_dict = dict(zip(SECTORS, points))
             include = SECTORS
         elif scheme == 'cap':
             include = []
         
         for industry in tqdm(SECTORS):
-            rel_cape_rank = self.get_relative_cape_rank(industry, date, 10) # NEED TO ADJUST TO 40
+            rel_cape_rank = self.get_relative_cape_rank(industry, date, 40) # NEED TO ADJUST TO 40
             if scheme == 'shiller':
-                    if rel_cape_rank <= 2:
+                    if rel_cape_rank <= 8:
                         points_dict[industry] += 1
-                    elif rel_cape_rank >= len(SECTORS)-2:
+                    elif rel_cape_rank >= len(SECTORS)-8:
                         points_dict[industry] -= 1    
             elif scheme == 'cap':
-                if rel_cape_rank <= 2:
+                if rel_cape_rank <= 8:
                     include.append(industry)
         
         df_prices = data.get_data('industry_index')
@@ -150,7 +147,7 @@ class CAPE_MOM(Strategy):
 
     def stock_selection_mom(self, funds, date, scheme) -> Portfolio:
         if scheme == 'shiller':
-            points = [1] * len(SECTORS)
+            points = [2] * len(SECTORS)
             points_dict = dict(zip(SECTORS, points))
             include = SECTORS
         elif scheme == 'cap':
@@ -159,12 +156,12 @@ class CAPE_MOM(Strategy):
         for industry in tqdm(SECTORS):
             mom_rank = self.get_mom_rank(industry, date) # NEED TO ADJUST TO 40
             if scheme == 'shiller':
-                    if mom_rank <= 2:
+                    if mom_rank <= 8:
                         points_dict[industry] += 1
-                    elif mom_rank >= len(SECTORS)-2:
+                    elif mom_rank >= len(SECTORS)-8:
                         points_dict[industry] -= 1    
             elif scheme == 'cap':
-                if mom_rank <= 2:
+                if mom_rank <= 8:
                     include.append(industry)
         
         df_prices = data.get_data('industry_index')
@@ -189,7 +186,7 @@ class CAPE_MOM(Strategy):
 
     def stock_selection_combined(self, funds, date, scheme) -> Portfolio:
         if scheme == 'shiller':
-            points = [1] * len(SECTORS)
+            points = [2] * len(SECTORS)
             points_dict = dict(zip(SECTORS, points))
             include = SECTORS
 
@@ -202,13 +199,13 @@ class CAPE_MOM(Strategy):
             # over/underweight sectors based on their ranks
 
             if scheme == 'shiller':
-                if rel_cape_rank <= 2 or mom_rank <= 2:
+                if rel_cape_rank <= 4 or mom_rank <= 4:
                     points_dict[industry] += 1
-                elif rel_cape_rank >= len(SECTORS)-2 or mom_rank >= len(SECTORS)-2:
+                elif rel_cape_rank >= len(SECTORS)-4 or mom_rank >= len(SECTORS)-4:
                     points_dict[industry] -= 1
             
             elif scheme == 'cap':
-                if rel_cape_rank <= 2 or mom_rank <= 2:
+                if rel_cape_rank <= 4 or mom_rank <= 4:
                     include.append(industry)
         
         df_prices = data.get_data('industry_index')
@@ -232,7 +229,7 @@ class CAPE_MOM(Strategy):
         return portfolio
 
 
-    def stock_selection(self, funds, date, scheme='cap') -> Portfolio:
+    def stock_selection(self, funds, date, scheme='shiller') -> Portfolio:
         '''overrides the stock_selection method in the parent class'''
         portfolio = self.stock_selection_combined(funds, date, scheme)
         portfolio.print_portfolio()
@@ -242,7 +239,7 @@ class CAPE_MOM(Strategy):
 if __name__ == '__main__':
     cape_mom = CAPE_MOM(strategy_name='CAPE + Momentum')
     
-    start = pd.Timestamp('20100701')
+    start = pd.Timestamp('20080101')
     end = pd.Timestamp('20191231')
 
     holdings = run_backtest(start, end, data.get_data('industry_index'), cape_mom.stock_selection, 100, 3)
@@ -252,4 +249,4 @@ if __name__ == '__main__':
     benchmark = benchmark / benchmark[0] * 100 # normalize
 
     plot_performance(strategy=performance, benchmark=benchmark)
-    show_metrics(strategy=performance, benchmark=benchmark)
+    show_metrics(strategy=performance, benchmark=benchmark, holdings=holdings, df_price=data.get_data('industry_index'))
