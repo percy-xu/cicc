@@ -74,7 +74,7 @@ class CAPE_MOM(Strategy):
         series = data.get_data('industry_index')[industry]
         series = series[series.index <= date]
         # calculate lagged return
-        start_date = date - relativedelta(months = 12)
+        start_date = date - relativedelta(months = look_back*2)
         end_date = date - relativedelta(months = look_back)
 
         returns = []
@@ -227,14 +227,12 @@ class CAPE_MOM(Strategy):
         portfolio = Portfolio(long=shares_dict, short={}, cash=0)
 
         return portfolio
-
-
-    def stock_selection(self, funds, date, scheme='shiller') -> Portfolio:
+        
+    def stock_selection(self, funds, date, scheme='cap') -> Portfolio:
         '''overrides the stock_selection method in the parent class'''
-        portfolio = self.stock_selection_combined(funds, date, scheme)
+        portfolio = self.stock_selection_mom(funds, date, scheme)
         portfolio.print_portfolio()
         return portfolio
-        
 
 if __name__ == '__main__':
     cape_mom = CAPE_MOM(strategy_name='CAPE + Momentum')
