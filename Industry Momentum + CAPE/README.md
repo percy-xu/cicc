@@ -20,9 +20,8 @@
     - [Weighting Scheme](#weighting-scheme)
     - [Look-back Period](#look-back-period)
   - [Portfolio Management](#portfolio-management)
-  - [Back-testing](#back-testing)
-  - [Controlling for Risk-Factors](#controlling-for-risk-factors)
-- [Result](#result)
+  - [Industry Momentum - Does it exist?](#industry-momentum---does-it-exist)
+    - [Table 1, Annualized Returns of Long-Short Industry Momentum Strategies (%)](#table-1-annualized-returns-of-long-short-industry-momentum-strategies-)
 
 ## About
 
@@ -144,14 +143,15 @@ We are constructing an index, and therefore no cash is reserved in the portfolio
 
 The portfolio is rebalanced quarterly to always incorporate the most recent information.
 
-### Back-testing
+### Industry Momentum - Does it exist?
 
-COMING SOON
+#### Table 1, Annualized Returns of Long-Short Industry Momentum Strategies (%)
 
-### Controlling for Risk-Factors
-
-COMING SOON
-
-## Result
-
-COMING SOON
+|        | $H=3$        | $H=6$        | $H=9$        | $H=12$       | $H=18$       | $H=24$       |
+| ------ | -----------: | -----------: | -----------: | -----------: | -----------: | -----------: |
+| $L=3$  |  2.92 <br> (0.14) | 11.89 (2.28) | 18.46 (3.50) | 20.18 (3.99) | 26.94 (4.51) | 23.12 (4.21) |
+| $L=6$  | 22.17 (2.70) | 27.24 (3.09) | 26.56 (2.99) | 31.35 (3.19) | 33.31 (3.33) | 17.07 (2.38) |
+| $L=9$  | 24.50 (2.62) | 29.06 (2.83) | 34.66 (3.04) | 39.58 (3.18) | 29.92 (2.89) |  8.29 (1.43) |
+| $L=12$ | 10.72 (1.74) | 13.92 (1.91) | 10.74 (1.69) |  3.77 (0.96) | 0.03 (-1.08) |  0   (-2.97) |
+| $L=18$ |  0   (-1.18) |  0   (-2.19) |  0   (-3.04) |  0   (-3.54) | 0    (-4.57) |  0   (-5.72) |
+| $L=24$ |  0   (-4.12) |  0   (-4.62) |  0   (-4.95) |  0   (-5.26) | 0    (-6.35) |  0   (-7.56) |
