@@ -20,8 +20,8 @@
     - [Weighting Scheme](#weighting-scheme)
     - [Look-back Period](#look-back-period)
   - [Portfolio Management](#portfolio-management)
-  - [Industry Momentum - Does it exist?](#industry-momentum---does-it-exist)
-    - [Table 1, Annualized Returns of Long-Short Industry Momentum Strategies (%)](#table-1-annualized-returns-of-long-short-industry-momentum-strategies-)
+- [Industry Momentum - Does it exist?](#industry-momentum---does-it-exist)
+  - [Table 1, Annualized Returns of Long-Short Industry Momentum Strategies (%)](#table-1-annualized-returns-of-long-short-industry-momentum-strategies-)
 
 ## About
 
@@ -143,15 +143,17 @@ We are constructing an index, and therefore no cash is reserved in the portfolio
 
 The portfolio is rebalanced quarterly to always incorporate the most recent information.
 
-### Industry Momentum - Does it exist?
+## Industry Momentum - Does it exist?
 
-#### Table 1, Annualized Returns of Long-Short Industry Momentum Strategies (%)
+Following Jegadeesh & Titman (1993) and Moskowitz & Grinblatt (1999), we construct a monthly rebalanced strategy that longs the winning industries and shorts the losing industries in the previous $`L`$ months. 
 
-|        | $H=3$        | $H=6$        | $H=9$        | $H=12$       | $H=18$       | $H=24$       |
-| ------ | -----------: | -----------: | -----------: | -----------: | -----------: | -----------: |
-| $L=3$  |  2.92 <br> (0.14) | 11.89 (2.28) | 18.46 (3.50) | 20.18 (3.99) | 26.94 (4.51) | 23.12 (4.21) |
-| $L=6$  | 22.17 (2.70) | 27.24 (3.09) | 26.56 (2.99) | 31.35 (3.19) | 33.31 (3.33) | 17.07 (2.38) |
-| $L=9$  | 24.50 (2.62) | 29.06 (2.83) | 34.66 (3.04) | 39.58 (3.18) | 29.92 (2.89) |  8.29 (1.43) |
-| $L=12$ | 10.72 (1.74) | 13.92 (1.91) | 10.74 (1.69) |  3.77 (0.96) | 0.03 (-1.08) |  0   (-2.97) |
-| $L=18$ |  0   (-1.18) |  0   (-2.19) |  0   (-3.04) |  0   (-3.54) | 0    (-4.57) |  0   (-5.72) |
-| $L=24$ |  0   (-4.12) |  0   (-4.62) |  0   (-4.95) |  0   (-5.26) | 0    (-6.35) |  0   (-7.56) |
+### Table 1, Annualized Returns of Long-Short Industry Momentum Strategies (%)
+
+|        | $H=3$                 | $H=6$                 | $H=9$                 | $H=12$                | $H=18$                | $H=24$                |
+| :----- | :-------------------: | :-------------------: | :-------------------: | :-------------------: | :-------------------: | :-------------------: |
+| $L=3$  |  **2.92** <br> (0.14) | **11.89** <br> (2.28) | **18.46** <br> (3.50) | **20.18** <br> (3.99) | **26.94** <br> (4.51) | **23.12** <br> (4.21) |
+| $L=6$  | **22.17** <br> (2.70) | **27.24** <br> (3.09) | **26.56** <br> (2.99) | **31.35** <br> (3.19) | **33.31** <br> (3.33) | **17.07** <br> (2.38) |
+| $L=9$  | **24.50** <br> (2.62) | **29.06** <br> (2.83) | **34.66** <br> (3.04) | **39.58** <br> (3.18) | **29.92** <br> (2.89) | **8.29**  <br> (1.43) |
+| $L=12$ | **10.72** <br> (1.74) | **13.92** <br> (1.91) | **10.74** <br> (1.69) |  **3.77** <br> (0.96) | **0.03** <br> (-1.08) | **0.00** <br> (-2.97) |
+| $L=18$ | **0.00** <br> (-1.18) | **0.00** <br> (-2.19) | **0.00** <br> (-3.04) | **0.00** <br> (-3.54) |**0.00** <br>  (-4.57) | **0.00** <br> (-5.72) |
+| $L=24$ | **0.00** <br> (-4.12) | **0.00** <br> (-4.62) | **0.00** <br> (-4.95) | **0.00** <br> (-5.26) |**0.00** <br>  (-6.35) | **0.00** <br> (-7.56) |
