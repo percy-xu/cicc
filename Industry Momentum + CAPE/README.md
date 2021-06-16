@@ -145,7 +145,7 @@ The portfolio is rebalanced quarterly to always incorporate the most recent info
 
 ## Industry Momentum - Does it exist?
 
-Following Jegadeesh & Titman (1993) and Moskowitz & Grinblatt (1999), we construct a monthly rebalanced strategy that longs the winning industries and shorts the losing industries in the previous $`L`$ months. 
+Following Jegadeesh & Titman (1993) and Moskowitz & Grinblatt (1999), we construct a monthly rebalanced strategy that longs the winning industries (top tertile) and shorts the losing industries (bottom tertile) in the previous $L$ months. The long-short portfolio is then held for $H$ months. There is a one month lag between the look-back period and the holding period to mitigate the short-term effects. For example, at January 2021 a $L=6,H=6$ strategy would long the winners and short the losers from May 2020 to November 2020. Table 1 reports the annualized returns of 25 such strategies with look-back and holding periods varying from 3, 6, 9, 12, 18 and 24 months.
 
 ### Table 1, Annualized Returns of Long-Short Industry Momentum Strategies (%)
 
